@@ -3,6 +3,9 @@ from sys import dont_write_bytecode
 from tkinter import *
 from turtle import back, window_width
 from PIL import ImageTk , Image
+import os
+import signup
+
 
 class loginForm : 
     def __init__(self,window):
@@ -66,17 +69,18 @@ class loginForm :
         self.signup_link = Label(self.lg_frame , text="sign up now" , bg='grey' , font= ('Helvetica 10 underline') , cursor='hand2', fg='white')
         self.signup_link.place(x=350 , y=455 , height=14)
         
+        self.signup_link.bind('<Button-1>' , lambda event:loadSignupPage(window))
+        
         # ========= forget password =========
         self.forget_pw = Label(self.lg_frame , text="forget password?" , bg='grey' , font= ('Helvetica 10 underline') , cursor='hand2', fg='#99f8d3')
         self.forget_pw.place(x=270 , y=475 , height=14)
 
-
-def page():
-    window = Tk()
-    loginForm(window)
-    window.mainloop()
-
 def validateAccount():
     print('login is pressed')
 
-page()
+def loadSignupPage(window):
+    signup.signupPage(window) 
+
+def loginPage(window):
+    loginForm(window)
+    window.mainloop()
