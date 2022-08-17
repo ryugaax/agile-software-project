@@ -31,7 +31,7 @@ class homePage :
         menu.add_cascade(label='exit' , menu=exitMenu)
 
 # =============about us=================  
-        my_label = HTMLLabel(self.window, html="""
+        about = HTMLLabel(self.window, html="""
             <div style='background-color:#2832C2'>
             <h1 style="text-align:center">About us</h1>
             
@@ -48,9 +48,9 @@ class homePage :
             </div>
             """)
         
-        my_label.config(bg='#2832C2')
+        about.config(bg='#2832C2')
         # Adjust label
-        my_label.pack(pady=20, padx=20 , fill='both')
+        about.pack(pady=20, padx=20 , fill='both')
 
 def page():
     window = Tk()
