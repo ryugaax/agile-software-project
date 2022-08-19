@@ -1,14 +1,20 @@
 from cgitb import text
+from csv import reader
 from sys import dont_write_bytecode
 from tkinter import *
 from turtle import back, window_width
 from PIL import ImageTk , Image
 import os
 import signup
-
+from setuptools import *
+import csv
+import home
 
 class loginForm : 
     def __init__(self,window):
+        self.user_email = None
+        self.user_password = None
+        self.user_institution = None
         self.window = window
         self.window.geometry('1166x718')
         # self.window.state('zoomed')
@@ -46,7 +52,7 @@ class loginForm :
         self.password_label = Label(self.lg_frame , text='password : ' , bg='grey' , font=(30))
         self.password_label.place(x=250 , y= 320 , width=150 , height=20)   
 
-        self.password_textbox = Entry(self.lg_frame , font=(25) , bg='grey' , relief='flat' , show='*')
+        self.password_textbox = Entry(self.lg_frame , font=(25) , bg='white' , relief='flat' , show='*')
         self.password_textbox.place(x=200 , y=350 , width=250 , height=20)
 
         self.password_line = Canvas(self.lg_frame , width= 250 , height=2 , bg='black' , highlightthickness=0 )
@@ -59,7 +65,7 @@ class loginForm :
         self.login_button_label.image = login_button_photo
         self.login_button_label.place(x=200 , y=400 , width=250 , height=50)
 
-        self.login = Button(self.login_button_label , text='login' , font=(25) , bd=0 , cursor='hand2' , activeforeground='grey' , activebackground= '#1995CC', fg='black' , background='#1995CC' , command=validateAccount)
+        self.login = Button(self.login_button_label , text='login' , font=(25) , bd=0 , cursor='hand2' , activeforeground='grey' , activebackground= '#1995CC', fg='black' , background='#1995CC' , command=lambda : self.validateAccount(self.email_textbox,self.password_textbox))
         self.login.place(x=55,y=10 ,width=130 )
 
         # ========= sign up =========
@@ -69,18 +75,37 @@ class loginForm :
         self.signup_link = Label(self.lg_frame , text="sign up now" , bg='grey' , font= ('Helvetica 10 underline') , cursor='hand2', fg='white')
         self.signup_link.place(x=350 , y=455 , height=14)
         
-        self.signup_link.bind('<Button-1>' , lambda event:loadSignupPage(window))
+        self.signup_link.bind('<Button-1>' , lambda event:self.loadSignupPage(window))
         
         # ========= forget password =========
         self.forget_pw = Label(self.lg_frame , text="forget password?" , bg='grey' , font= ('Helvetica 10 underline') , cursor='hand2', fg='#99f8d3')
         self.forget_pw.place(x=270 , y=475 , height=14)
 
-def validateAccount():
-    print('login is pressed')
+    def validateAccount(cls , email_entry , password_entry):
+        if os.path.exists('users_account.csv'):
+            with open('users_account.csv','r',newline='') as f:
+                reader = csv.reader(f)
+                for row in reader :
+                    if (row[1]== email_entry.get() and row[2] == password_entry.get()):
+                        cls.user_institution = row[0]
+                        cls.user_email = row[1]
+                        cls.user_password = row[2]
+                        for widgets in cls.window.winfo_children():
+                            widgets.destroy()
+                        homePage = home.homePage(cls.window , institution=cls.user_institution)
+                        homePage.page()
 
-def loadSignupPage(window):
-    signup.signupPage(window) 
+    def loginPage(self):
+        self.window.mainloop()
+    
+    def loadSignupPage(self):
+        for widgets in self.window.winfo_children():
+            widgets.destroy()
+        signUpPage=signup.signupForm(self.window)
+        signUpPage.signupPage(self.window) 
 
-def loginPage(window):
-    loginForm(window)
-    window.mainloop()
+def readcsv():
+    with open('users_account.csv') as f:
+        for row in f :
+            print(row.split(',')[1])
+# https://github.com/br34th3r/PythonLoginAndRegister
