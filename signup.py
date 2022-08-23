@@ -10,6 +10,7 @@ from PIL import ImageTk , Image
 import csv
 import re
 import os
+import login
 
 class signupForm : 
     def __init__(self,window):
@@ -35,6 +36,13 @@ class signupForm :
         # ========= heading =========
         self.heading = Label(self.lg_frame, text='SIGN UP' , font=25 , bg='grey') 
         self.heading.place(x=8 , y=30 , width=634 , height=30)
+
+        # =========back button===========
+        self.back_button_photo = Image.open('images\\back.png')
+        back_image=ImageTk.PhotoImage(self.back_button_photo)
+        self.back_button = Button(self.lg_frame , image=back_image ,cursor="hand2" , background="grey" , relief=FLAT , command=self.loadLoginPage)
+        self.back_button.image = back_image
+        self.back_button.place(x=8 , y=30,width=50,height=50)
 
         # ========= institution name =========
         self.institution_label = Label(self.lg_frame , text='Institution name : ' , bg='grey' , font=(30))
@@ -83,57 +91,58 @@ class signupForm :
         self.login_button_label.image = login_button_photo
         self.login_button_label.place(x=200 , y=420 , width=250 , height=50)
 
-        self.login = Button(self.login_button_label , text='register' , font=(25) , bd=0 , cursor='hand2' , activeforeground='grey' , activebackground= '#1995CC', fg='black' , background='#1995CC' , command= lambda : validateAccount(self.email_textbox , self.password_textbox , self.confirm_password_textbox , self.insti_textbox))
+        self.login = Button(self.login_button_label , text='register' , font=(25) , bd=0 , cursor='hand2' , activeforeground='grey' , activebackground= '#1995CC', fg='black' , background='#1995CC' , command= lambda : self.validateAccount(self.email_textbox , self.password_textbox , self.confirm_password_textbox , self.insti_textbox))
         self.login.place(x=55,y=10 ,width=130 )
 
 
-def signupPage(window):
-    signupForm(window)
-    window.mainloop()
-   
-def registerAccount(user_email , user_password , institution_name):
-    print(user_email , user_password , institution_name)
-    # header = ['institution_name' , 'user_email' , 'user_password' ]
-    data = [institution_name ,user_email , user_password]
+    def signupPage(self):
+        self.window.mainloop()
 
-    with open('users_account.csv', 'a', encoding='UTF8' , newline='') as f:
-        writer = csv.writer(f)
-    # write the data
-        writer.writerow(data)
+    def validateAccount(self,email_entry , password_entry , confirm_entry , institution_entry):
+        user_email = email_entry.get()
+        user_password = password_entry.get()
+        confirm_password = confirm_entry.get()
+        institution_name = institution_entry.get()
+        email_to_match = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
 
-def validateAccount(email_entry , password_entry , confirm_entry , institution_entry):
-    user_email = email_entry.get()
-    user_password = password_entry.get()
-    confirm_password = confirm_entry.get()
-    institution_name = institution_entry.get()
-    email_to_match = "^[a-zA-Z0-9-_]+@[a-zA-Z0-9]+\.[a-z]{1,3}$"
-
-    if(user_password!=''):
-        if(user_password!=confirm_password):
-            print("please enter the correct password")
+        if(user_password!=''):
+            if(user_password!=confirm_password):
+                print("please enter the correct password")
+                return
+        else:
+            print('please enter a password')
             return
-    else:
-        print('please enter a password')
-        return
-    
-    if os.path.exists('users_account.csv'):
-        with open('users_account.csv', encoding='UTF8' , newline='') as f:
-            for row in f:
-                if row.split(',')[1] == user_email:
-                    print('email has already been registered')
-                    return
-                print(row.split(',')[0])
-    
-    if re.match(email_to_match,user_email):
-        registerAccount(user_email , user_password , institution_name)
-        print('email is registered well')
-    else:
-        print('email invalid')
-        return
+        
+        if os.path.exists('users_account.csv'):
+            with open('users_account.csv', encoding='UTF8' , newline='') as f:
+                for row in f:
+                    if row.split(',')[1] == user_email:
+                        print('email has already been registered')
+                        return
+                    print(row.split(',')[0])
+        
+        if re.match(email_to_match,user_email):
+            self.registerAccount(user_email , user_password , institution_name)
+            print('email is registered well')
+        else:
+            print('email invalid')
+            return
 
-    email_entry.delete(0 ,  END)
-    password_entry.delete(0 , END)
-    confirm_entry.delete(0 , END)
-    institution_entry.delete(0 , END)
+        email_entry.delete(0 ,  END)
+        password_entry.delete(0 , END)
+        confirm_entry.delete(0 , END)
+        institution_entry.delete(0 , END)
+        
+    def registerAccount(self , user_email , user_password , institution_name):
+        # header = ['institution_name' , 'user_email' , 'user_password' ]
+        data = [institution_name ,user_email , user_password]
+        with open('users_account.csv', 'a', encoding='UTF8' , newline='') as f:
+            writer = csv.writer(f)
+        # write the data
+            writer.writerow(data)
+
+    def loadLoginPage(self):
+        loginPage = login.loginForm(self.window)
+        loginPage.loginPage()
 
 # https://www.simplifiedpython.net/python-gui-login/
