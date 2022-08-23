@@ -6,55 +6,36 @@ from PIL import ImageTk , Image
 import os
 import signup
 from tkhtmlview import HTMLLabel
+import userMenu
 
-class homePage : 
-    def __init__(self,window):
-        self.window = window
-        self.window.geometry('1166x718')
-        menu = Menu(window)
-        window.config(menu=menu , bg='#2832C2')
+class aboutPage : 
+        def __init__(self,window):
+                self.window = window
+                self.window.geometry('1166x718')
+                menu = userMenu.createMenu(window)
 
-# =============help menu=================
-        helpMenu = Menu(menu , tearoff=0 , activebackground='orange')
-        helpMenu.add_command(label='how to use')
-        helpMenu.add_command(label='about us')
-        menu.add_cascade(label='help' , menu=helpMenu)
+                # =============about us=================  
+                about = HTMLLabel(self.window, html="""
+                <div style='background-color:#FFE4C4'>
+                <h1 style="text-align:center">About us</h1>
 
-# =============setting menu=================      
-        settingMenu = Menu(menu , tearoff=0 , activebackground='orange')
-        settingMenu.add_command(label='account setting')
-        settingMenu.add_command(label='log out')
-        menu.add_cascade(label='setting' , menu=settingMenu)
 
-# =============exit menu=================      
-        exitMenu = Menu(menu , tearoff=0 , activebackground='orange')
-        menu.add_cascade(label='exit' , menu=exitMenu)
+                <p>This software allow users to download into their smart devices for video surveillance features. This is extremely 
+                useful for individuals who wishes to capture any hindrance to their respective desired spots which may be of much value to you
+                and you can develop a bigger sense of security after applying our software in your devices. Our software is extremely user-friendly and any
+                individuals can download to enjoy this software features. </p>
+                <p>Our aim is to develope an easy-to-use security camera software for every computer. All you need is just a camera for your computer and it will surveill for you.</p>
+                <p>This software is developed by members of Team 60: Bevlyn Tan, Deepak, Dheran, Kenneth, Wei Shen </p>
 
-# =============about us=================  
-        about = HTMLLabel(self.window, html="""
-            <div style='background-color:#2832C2'>
-            <h1 style="text-align:center">About us</h1>
-            
-        
-            <p>Agile Security Cam is developed by Team60 from the Agile Software Project module in UOL Computer Science programme.</p>
-            <p>Our aim is to develope an easy-to-use security camera software for every computer. All you need is just a camera for your computer and it will surveill for you.</p>
-            <ul>This software is developed by : 
-            <li>bev</li>
-            <li>deepak</li>
-            <li>dharen</li>
-            <li>kenneth</li>
-            <li>wei shen</li>
-            </ul>
-            </div>
-            """)
-        
-        about.config(bg='#2832C2')
-        # Adjust label
-        about.pack(pady=20, padx=20 , fill='both')
 
-def page():
-    window = Tk()
-    homePage(window)
-    window.mainloop()
+                </div>
+                """)
 
-page()
+                about.config(bg='#FFE4C4')
+                # Adjust label
+                about.pack(pady=20, padx=20 , fill='both')
+
+        def loadPage(self):
+                self.window.mainloop()
+
+
