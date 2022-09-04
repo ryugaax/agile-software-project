@@ -8,12 +8,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 def footageSendTo(address , fileToSend):
-    subject = "An email with attachment from Python"
-    body = "This is an email with attachment sent from Python"
+    subject = "EASY CAM footage"
+    body = "Someone is using the computer. Do you know this user?"
     sender_email = "agileseccam@gmail.com"
     receiver_email = address
-    # receiver_email = "ryugaax010712@gmail.com"
-    # password = input("Type your password and press enter:")
     password = "elfyliulmjflcxwd"
 
     # Create a multipart message and set headers

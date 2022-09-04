@@ -1,11 +1,4 @@
-from cgitb import text
-from decimal import Overflow
-from sys import dont_write_bytecode
 from tkinter import *
-from turtle import back, bgcolor, right, width, window_width
-from PIL import ImageTk , Image
-import os
-import signup
 from tkhtmlview import HTMLLabel
 import userMenu
 

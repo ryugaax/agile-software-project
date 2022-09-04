@@ -1,5 +1,4 @@
 from cgitb import text
-# from curses import window
 from sys import dont_write_bytecode
 from tkinter import *
 from tkinter import ttk
@@ -7,8 +6,8 @@ from tkinter.tix import IMAGE
 from turtle import back, home, width, window_width
 from PIL import ImageTk , Image
 import os
-import signup
 import userMenu
+import cam
 
 class homePage : 
     def __init__(self,window,institution = ""):
@@ -16,25 +15,6 @@ class homePage :
         self.window.geometry('1166x718')
         menu = userMenu.createMenu(window)
 
-# # =============logo =================           
-#         self.logo = Image.open('images\\logo_1.jpg')
-#         photo = ImageTk.PhotoImage(self.logo)
-#         self.logo_panel = Label(self.window,image=photo)
-#         self.logo_panel.image = photo
-#         self.logo_panel.place(x=458 , y=50 , width=250 , height=250 )  
-
-# # =============profile =================           
-#         self.profile_wlc = Label(self.window , font=(100) , bg='#27285C' , fg='white' , text="Welcome back!" , justify='center')
-#         self.profile_wlc.place(x=358 , y=320 , width=450)
-
-#         self.profile = Label(self.window , font=(100) , bg='#27285C' , fg='white' , text="This security camera is currently working for "+ institution , justify='center')
-#         self.profile.place(x=258 , y=350 , width=650)
-
-# # =============recording button =================        
-#         self.record_button = Button(self.window , text='Start recording' , font=(50)  , cursor='hand2' , command=startRecording)
-#         self.record_button.place(x=458,y=400 , width=250 , height=150 )
-#         self.record_button.bind('<Enter>' , on_enter)
-#         self.record_button.bind('<Leave>' , on_leave)
         # Create A Canvas
         my_canvas = Canvas(self.window)
         my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
@@ -85,7 +65,7 @@ class homePage :
         my_canvas.create_image(600,700, anchor=NW, image=self.new_image4)
 
         my_canvas.create_text((600,77), text="Welcome Back!",font=('Arial',40,'bold'),anchor=CENTER)
-        my_canvas.create_text((600,195), text="This security camera is currently waiting for test",font=('Arial',13,'bold'),anchor=CENTER)
+        my_canvas.create_text((600,195), text="This security camera is currently working for "+ institution ,font=('Arial',20,'bold'),anchor=CENTER)
         my_canvas.create_text((385,550), text="Video Surveillance:\nis installed on your smart devices, \nEasy Cam uses IP cameras and \nwebcams to perform unbeatable video monitoring. \nThe program supports more than 1200 models \nof IP cameras, and virtually all webcams.",
         font=('Arial',13,'bold'),anchor=CENTER)
         my_canvas.create_text((850,550), text="Video Recording: \nuses Opencv encoding engine for \nquality video recording. You can \nrecord the events in your home, \noffice or shop while you are away. \nYou can run recording at special \nperiods of a day and the week.",
@@ -114,7 +94,7 @@ class homePage :
         self.btn_inactive=ImageTk.PhotoImage(self.btn_inactive_image)
         self.btn_active=ImageTk.PhotoImage(self.btn_active_image)
 
-        button=Button(self.window, image=self.btn_inactive, width=300, height=150, bd=0, relief="sunken", command=pressed)
+        button=Button(self.window, image=self.btn_inactive, width=300, height=150, bd=0, relief="sunken", command=startRecording)
         my_canvas.create_window(582,340, window=button)
         button.bind("<Enter>", self.on_enter)
         button.bind("<Leave>", self.on_leave)
@@ -128,10 +108,8 @@ class homePage :
         event.widget["image"]=self.btn_inactive
 
 def startRecording():
-        os.system('python site-packages\cam.py')
-
-
-def pressed():
-        print("button is pressed")
-
-#    https://stackoverflow.com/questions/49888623/tkinter-hovering-over-button-color-change
+        path = os.path.dirname(__file__)
+        # os.system("python '" + path + "\\" + "cam.py'")
+        startRecording = cam.startRecording()
+        # print("python '" +path+"\cam.py'")
+#    https://stackoverflow.com/questions/498886213/tkinter-hovering-over-button-color-change
